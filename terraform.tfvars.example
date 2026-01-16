@@ -1,0 +1,39 @@
+# EKS + ArgoCD Capability 환경 설정 예시
+# 사용법: cp terraform.tfvars.example terraform.tfvars
+
+# AWS 기본 설정
+region       = "ap-northeast-2"        # AWS 리전
+cluster_name = "eks-argocd-practice"   # EKS 클러스터 이름 (DNS 호환)
+environment  = "practice"              # 환경 구분
+owner        = "practice-team"         # 리소스 소유자
+
+# VPC 네트워킹 설정
+vpc_cidr = "10.0.0.0/16"              # VPC CIDR 블록
+
+# 가용 영역 (각 리전에 맞게 조정)
+azs = [
+  "ap-northeast-2a",
+  "ap-northeast-2c"
+]
+
+# Private 서브넷 (EKS 노드 배치)
+private_subnets = [
+  "10.0.1.0/24",   # ap-northeast-2a
+  "10.0.2.0/24"    # ap-northeast-2c
+]
+
+# Public 서브넷 (NAT Gateway, Load Balancer)
+public_subnets = [
+  "10.0.101.0/24", # ap-northeast-2a
+  "10.0.102.0/24"  # ap-northeast-2c
+]
+
+# 공통 태그 (비용 추적 및 관리용)
+common_tags = {
+  Project     = "eks-practice"
+  Environment = "practice"
+  ManagedBy   = "terraform"
+  Owner       = "practice-team"
+  Purpose     = "argocd-capability-demo"
+  CreatedDate = "2024-01-16"
+}
